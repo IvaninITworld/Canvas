@@ -6,15 +6,32 @@ const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 800;
 
-ctx.fillRect(210, 200, 15, 100);
-ctx.fillRect(350, 200, 15, 100);
-ctx.fillRect(260, 200, 60, 200);
+ctx.lineWidth = 2;
 
-ctx.arc(250, 100, 50, 0, 2 * Math.PI);
-ctx.fill();
+const colours = [
+  "#1abc9c",
+  "#2ecc71",
+  "#3498db",
+  "#9b59b6",
+  "#34495e",
+  "#95a5a6",
+  "#e67e22",
+  "#e74c3c",
+  "#c0392b",
+  "#f39c12",
+  "#c0392b",
+  "#bdc3c7",
+  "#16a085",
+  "#7f8c8d",
+];
 
-ctx.beginPath();
-ctx.fillStyle = "red";
-ctx.arc(260, 80, 5, 0, 2 * Math.PI);
-ctx.arc(220, 80, 5, 0, 2 * Math.PI);
-ctx.fill();
+function onclick(event) {
+  ctx.beginPath();
+  ctx.moveTo(400, 400);
+  const colour = colours[Math.floor(Math.random() * colours.length)];
+  ctx.strokeStyle = colour;
+  ctx.lineTo(event.offsetX, event.offsetY);
+  ctx.stroke();
+}
+
+canvas.addEventListener("click", onclick);
