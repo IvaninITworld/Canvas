@@ -1,3 +1,4 @@
+const textInput = document.getElementById("text");
 const modeBtn = document.getElementById("mode-btn");
 const fileInput = document.getElementById("file");
 const eraserBtn = document.getElementById("eraser-btn");
@@ -19,6 +20,7 @@ const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 800;
 
 ctx.lineWidth = lineWidth.value;
+ctx.lineCap = "round";
 
 let isPainting = false;
 let isFilling = false;
@@ -101,9 +103,22 @@ function onFileChange(event) {
   };
 }
 
+function onDoubleClick(event) {
+  const text = textInput.value;
+  if (text !== "") {
+    ctx.save();
+    // 기존에 가지고 있던 모든 변수들을 저장하고
+    ctx.lineWidth = 1;
+    ctx.strokeText(text, event.offsetX, event.offsetY);
+    ctx.restore();
+    // Save 와 restore 사이에 변화를 다시 복원시킨다.
+  }
+}
+
+canvas.addEventListener("dblclick", onDoubleClick);
+
 canvas.addEventListener("mousemove", onMove);
 // canvas.onmousemove = onMove; 위 라인과 같은 의미
-
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
 canvas.addEventListener("mouseleave", cancelPainting);
