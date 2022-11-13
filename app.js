@@ -1,3 +1,5 @@
+// The top line
+const saveButton = document.getElementById("save");
 const textInput = document.getElementById("text");
 const modeBtn = document.getElementById("mode-btn");
 const fileInput = document.getElementById("file");
@@ -94,6 +96,7 @@ function onEraserClick() {
 function onFileChange(event) {
   const file = event.target.files[0];
   // URL 을 생성해줘 그리고 브라우저가 자신의 메모리에 저장하지
+  // 그래서 다른데에서 열수 없음
   const url = URL.createObjectURL(file);
   const image = new Image();
   image.src = url;
@@ -115,8 +118,20 @@ function onDoubleClick(event) {
   }
 }
 
-canvas.addEventListener("dblclick", onDoubleClick);
+function onSaveClick() {
+  const url = canvas.toDataURL();
+  // 캔버스에 그린 그림을 URL 로 변환한 다음에
+  const a = document.createElement("a");
+  // a 태그를 생성해 가짜링크를 만들고
+  a.href = url;
+  // 가짜링크의 href 를 그림 url 로 설정한뒤에
+  a.download = "myDrawing.png";
+  a.click();
+  // 가짜링크를 클릭하게되면 "myDrawing" 으로 파일이 다운로드 되는 구조
+}
 
+// canvas 라이브러리가 가지고 있는 기능에서 넘어오는 정보들을 처리해주는 함수로
+canvas.addEventListener("dblclick", onDoubleClick);
 canvas.addEventListener("mousemove", onMove);
 // canvas.onmousemove = onMove; 위 라인과 같은 의미
 canvas.addEventListener("mousedown", startPainting);
@@ -124,11 +139,12 @@ canvas.addEventListener("mouseup", cancelPainting);
 canvas.addEventListener("mouseleave", cancelPainting);
 canvas.addEventListener("click", onCanvasClick);
 
+// html 쪽에 설정해준 id 에서 넘어오는 정보들을 처리해주는 함수로
 lineWidth.addEventListener("change", onLineWidthChange);
 color.addEventListener("change", onColorChange);
-
 colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
 modeBtn.addEventListener("click", onModeClick);
 destroyBtn.addEventListener("click", onDestroyClick);
 eraserBtn.addEventListener("click", onEraserClick);
 fileInput.addEventListener("change", onFileChange);
+saveButton.addEventListener("click", onSaveClick);
